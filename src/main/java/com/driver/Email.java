@@ -1,5 +1,5 @@
 package com.driver;
-import java.util.*;
+
 public class Email {
 
     private String emailId;
@@ -10,56 +10,65 @@ public class Email {
         this.password = "Accio@123";
     }
 
-    public Email() {
-
+    public String getEmailId() {
+        return this.emailId;
     }
 
-    public String getEmailId() {
-        return emailId;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPassword() {
-        return password;
+
+        return this.password;
     }
 
-    public void changePassword(String oldPassword, String newPassword) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter old password");
-        String currentPassword = sc.nextLine();
-        int n = newPassword.length();
+    public void changePassword(String oldPassword, String newPassword){
+        //Change password only if the oldPassword is equal to current password and the new password meets all of the following:
+        // 1. It contains at least 8 characters
+        // 2. It contains at least one uppercase letter
+        // 3. It contains at least one lowercase letter
+        // 4. It contains at least one digit
+        // 5. It contains at least one special character. Any character apart from alphabets and digits is a special character
+        if(oldPassword.equals(this.getPassword()) && newPassword.length()>=8){
 
-        if (currentPassword.equals(oldPassword)) {
-            if (n >= 8) {
-                boolean hasUpperCase = false;
-                boolean hasLowerCase = false;
-                boolean hasDigit = false;
-                boolean hasSpecialChar = false;
-
-                for (int i = 0; i < n; i++) {
-                    char ch = newPassword.charAt(i);
-
-                    if (Character.isUpperCase(ch)) {
-                        hasUpperCase = true;
-                    } else if (Character.isLowerCase(ch)) {
-                        hasLowerCase = true;
-                    } else if (Character.isDigit(ch)) {
-                        hasDigit = true;
-                    } else if (!Character.isLetterOrDigit(ch)) {
-                        hasSpecialChar = true;
-                    }
-                }
-
-                if (hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar) {
-                    this.password = newPassword;
-                    System.out.println("Password changed successfully.");
-                } else {
-                    System.out.println("New password does not meet the criteria.");
-                }
-            } else {
-                System.out.println("New password should contain at least 8 characters.");
+            if(check(newPassword)==true){
+                this.password = newPassword;
+//                System.out.print("New password added");
             }
-        } else {
-            System.out.println("Old password is incorrect.");
         }
+
+    }
+
+    public boolean check (String newPass){
+
+        int Up =0 , Lo =0 , Di =0 , Sp = 0;
+
+        for(int i =0;i<newPass.length();i++){
+            char ch = newPass.charAt(i);
+
+            if(ch>='A' && ch<='Z'){
+                Up++;
+            }
+            else if(ch>='a' && ch<='z'){
+                Lo++;
+            }
+            else if(ch>='0' && ch<='9'){
+                Di++;
+            }
+            else{
+                Sp++;
+            }
+        }
+
+        if(Up>=1 && Lo>=1 && Di>=1 && Sp>=1){
+            return true;
+        }
+
+        return false;
     }
 }
